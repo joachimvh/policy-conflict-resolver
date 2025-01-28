@@ -1,0 +1,13 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/policy-conflict-resolver/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "A ConflictEvaluator framework with URIs to link to its parameters.",
+      "@id": "urn:policy-conflict-resolver:ConflictEvaluator",
+      "@type": "ConflictEvaluator",
+      "extractor": { "@id": "urn:policy-conflict-resolver:PolicyExtractor" },
+      "evaluator": { "@id": "urn:policy-conflict-resolver:Evaluator" },
+      "resolver": { "@id": "urn:policy-conflict-resolver:ConflictEvaluator" }
+    }
+  ]
+}

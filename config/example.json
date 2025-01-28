@@ -1,0 +1,16 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/policy-conflict-resolver/^0.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Adds values for the ConflictEvaluator parameters in default.json. Only an extractor and resolver as this library does not include an evaluator."
+    },
+    {
+      "@id": "urn:policy-conflict-resolver:PolicyExtractor",
+      "@type": "OdrlPolicyExtractor"
+    },
+    {
+      "@id": "urn:policy-conflict-resolver:ConflictResolver",
+      "@type": "DenyConflictResolver"
+    }
+  ]
+}
