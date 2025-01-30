@@ -1,15 +1,16 @@
 import type { Quad } from '@rdfjs/types';
+import { AsyncHandler } from 'asynchronous-handlers';
+
+export interface PolicyExtractorArgs {
+  /**
+   * A collection of policy quads.
+   */
+  policies: Quad[];
+}
 
 /**
  * Can extract individual policy from a collection of policy data.
+ *
+ * @returns An array containing an entry for every individual policy that could be extracted.
  */
-export interface PolicyExtractor {
-  /**
-   * Extracts all individual policies from the input policy data set.
-   *
-   * @param policies - A collection of policy quads.
-   *
-   * @returns An array containing an entry for every individual policy that could be extracted.
-   */
-  extract: (policies: Quad[]) => Promise<Quad[][]>;
-}
+export abstract class PolicyExtractor extends AsyncHandler<PolicyExtractorArgs, Quad[][]> {}

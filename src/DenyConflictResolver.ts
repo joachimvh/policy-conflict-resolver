@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import type { Quad, Quad_Subject, Term } from '@rdfjs/types';
 import { DataFactory as DF, Store } from 'n3';
-import type { ConflictResolver } from './ConflictResolver';
+import type { ConflictResolverArgs } from './ConflictResolver';
+import { ConflictResolver } from './ConflictResolver';
 import { RDF, REPORT } from './Vocabularies';
 
 /**
@@ -10,8 +11,8 @@ import { RDF, REPORT } from './Vocabularies';
  * If there are no active reports in the input, the result will also be a Deny.
  * If there is at least one active permission, and no active prohibitions, the result will be an Allow.
  */
-export class DenyConflictResolver implements ConflictResolver {
-  public async resolve(reports: { policy: Quad[]; report: Quad[] }[]): Promise<Quad[]> {
+export class DenyConflictResolver extends ConflictResolver {
+  public async handle({ reports }: ConflictResolverArgs): Promise<Quad[]> {
     let permission: Quad_Subject | undefined;
     let prohibition: Quad_Subject | undefined;
     let activeReport: Store | undefined;

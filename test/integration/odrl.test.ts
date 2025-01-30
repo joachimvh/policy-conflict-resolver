@@ -5,6 +5,7 @@ import { ConflictEvaluator } from '../../src/ConflictEvaluator';
 import { DenyConflictResolver } from '../../src/DenyConflictResolver';
 import { OdrlPolicyExtractor } from '../../src/OdrlPolicyExtractor';
 import { ODRL, RDF, REPORT } from '../../src/Vocabularies';
+import { WrappedEvaluatorHandler } from '../../src/WrappedEvaluatorHandler';
 import { defaultAction, defaultTarget, generatePolicies } from '../util/Util';
 
 // Not fully integration as we do use a mock for the source evaluator.
@@ -24,7 +25,7 @@ describe('A full ODRL setup', (): void => {
     ),
   ];
   const extractor = new OdrlPolicyExtractor();
-  const source = new ODRLEvaluator(new ODRLEngineMultipleSteps());
+  const source = new WrappedEvaluatorHandler(new ODRLEvaluator(new ODRLEngineMultipleSteps()));
   const resolver = new DenyConflictResolver();
   const evaluator = new ConflictEvaluator(extractor, source, resolver);
 

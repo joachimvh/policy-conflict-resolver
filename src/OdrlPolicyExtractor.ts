@@ -1,6 +1,7 @@
 import type { Quad, Term } from '@rdfjs/types';
 import { Store } from 'n3';
-import type { PolicyExtractor } from './PolicyExtractor';
+import type { PolicyExtractorArgs } from './PolicyExtractor';
+import { PolicyExtractor } from './PolicyExtractor';
 import { getTripleChain } from './Util';
 import { ODRL } from './Vocabularies';
 
@@ -9,8 +10,8 @@ import { ODRL } from './Vocabularies';
  * This works by finding all odrl:action/odrl:target triple combinations.
  * Because of this, this will not work on policy data where those triples have a policy instead of a rule as subject.
  */
-export class OdrlPolicyExtractor implements PolicyExtractor {
-  public async extract(policies: Quad[]): Promise<Quad[][]> {
+export class OdrlPolicyExtractor extends PolicyExtractor {
+  public async handle({ policies }: PolicyExtractorArgs): Promise<Quad[][]> {
     return this.getPolicies(new Store(policies));
   }
 

@@ -6,7 +6,7 @@
       "@id": "urn:policy-conflict-resolver:ConflictEvaluator",
       "@type": "ConflictEvaluator",
       "extractor": { "@id": "urn:policy-conflict-resolver:PolicyExtractor" },
-      "evaluator": { "@id": "urn:policy-conflict-resolver:Evaluator" },
+      "evaluator": { "@id": "urn:policy-conflict-resolver:EvaluatorHandler" },
       "resolver": { "@id": "urn:policy-conflict-resolver:ConflictEvaluator" }
     }
   ]

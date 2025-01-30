@@ -33,7 +33,7 @@ describe('OdrlPolicyExtractor', (): void => {
       DF.quad(rule3, ODRL.terms.target, target2),
     ];
 
-    const result = await extractor.extract(policyData);
+    const result = await extractor.handleSafe({ policies: policyData });
     expect(result).toHaveLength(3);
     const store1 = new Store(result[0]);
     expect(store1.countQuads(set1, ODRL.terms.prohibition, null, null)).toBe(1);
@@ -60,7 +60,7 @@ describe('OdrlPolicyExtractor', (): void => {
       DF.quad(rule1, ODRL.terms.target, target2),
     ];
 
-    const result = await extractor.extract(policyData);
+    const result = await extractor.handleSafe({ policies: policyData });
     expect(result).toHaveLength(4);
 
     const store1 = new Store(result[0]);

@@ -9,6 +9,11 @@
       "@type": "OdrlPolicyExtractor"
     },
     {
+      "@id": "urn:policy-conflict-resolver:EvaluatorHandler",
+      "@type": "WrappedEvaluatorHandler",
+      "evaluator": { "@id": "urn:policy-conflict-resolver:Evaluator" }
+    },
+    {
       "@id": "urn:policy-conflict-resolver:ConflictResolver",
       "@type": "DenyConflictResolver"
     }

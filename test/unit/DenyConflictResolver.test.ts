@@ -21,10 +21,10 @@ describe('DenyConflictResolver', (): void => {
   it('generates a deny report if there is an active prohibition.', async(): Promise<void> => {
     const activePermission = generateRuleReport(true, true, 0);
     const activeProhibition = generateRuleReport(true, false, 1);
-    const report = new Store(await resolver.resolve([
+    const report = new Store(await resolver.handleSafe({ reports: [
       { policy: [], report: activePermission },
       { policy: [], report: activeProhibition },
-    ]));
+    ]}));
     expect(report.countQuads(null, RDF.terms.type, REPORT.terms.ConflictReport, null)).toBe(1);
     const subject = report.getSubjects(RDF.terms.type, REPORT.terms.ConflictReport, null)[0];
     expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.PrioritizeDeny, null)).toBe(1);
@@ -40,10 +40,10 @@ describe('DenyConflictResolver', (): void => {
   it('generates a deny report if there are no active rules.', async(): Promise<void> => {
     const activePermission = generateRuleReport(false, true, 0);
     const activeProhibition = generateRuleReport(false, false, 1);
-    const report = new Store(await resolver.resolve([
+    const report = new Store(await resolver.handleSafe({ reports: [
       { policy: [], report: activePermission },
       { policy: [], report: activeProhibition },
-    ]));
+    ]}));
     expect(report.countQuads(null, RDF.terms.type, REPORT.terms.ConflictReport, null)).toBe(1);
     const subject = report.getSubjects(RDF.terms.type, REPORT.terms.ConflictReport, null)[0];
     expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.PrioritizeDeny, null)).toBe(1);
@@ -55,10 +55,10 @@ describe('DenyConflictResolver', (): void => {
   it('generates an allow report if there is an active permission and no prohibition.', async(): Promise<void> => {
     const activePermission = generateRuleReport(true, true, 0);
     const activeProhibition = generateRuleReport(false, false, 1);
-    const report = new Store(await resolver.resolve([
+    const report = new Store(await resolver.handleSafe({ reports: [
       { policy: [], report: activePermission },
       { policy: [], report: activeProhibition },
-    ]));
+    ]}));
     expect(report.countQuads(null, RDF.terms.type, REPORT.terms.ConflictReport, null)).toBe(1);
     const subject = report.getSubjects(RDF.terms.type, REPORT.terms.ConflictReport, null)[0];
     expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.PrioritizeDeny, null)).toBe(1);
