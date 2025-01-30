@@ -43,6 +43,16 @@ results in the following report:
     report:activationState report:Active.
 ```
 
+## Potential issues
+
+The `OdrlPolicyExtractor` splits policies by detecting individual rules.
+These are found by looking for the action and target relations of rules,
+and potentially making the cross product if these occur multiple times in the same rule.
+This has two potential issues:
+
+1. In case a policy uses custom profile relations that could also indicate different rule instances, these will not be detected.
+2. If the target and/or action are linked to the policy instead of the rule, the extractor will be unable to handle that.
+
 ## Components.js
 
 This library supports Components.js configurations. See the `config` folder for examples.
