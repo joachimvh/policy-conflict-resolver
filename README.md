@@ -14,7 +14,22 @@ and is instantiated with 3 parameters:
    The `request` and `state` arrays will remain unchanged.
 3. A `ConflictResolver` that takes all the reports returned by the previous steps
    and generates a new report by applying a conflict resolution algorithm on those reports.
-   This library provides the `DenyConflictResolver` which prioritizes prohibitions over permissions.
+   This library provides several that can be chained together:
+   * `ActiveConflictResolver`, which filters out inactive reports.
+   * `PriorityConflictresolver`, which only keeps the reports of the policy rules with the highest priority.
+     A priority can be given to a rule using the `urn:example:custom:odrl:priority` predicate.
+   * `DenyConflictResolver`, which prioritizes prohibitions over permissions.
+
+For example, a `ConflictEvaluator` can be initialized with the following code:
+
+```ts
+const extractor = new OdrlPolicyExtractor();
+const source = new WrappedEvaluatorHandler(new ODRLEvaluator(new ODRLEngineMultipleSteps()));
+const resolver = new ActiveConflictResolver(new PriorityConflictResolver(new DenyConflictResolver()));
+
+const evaluator = new ConflictEvaluator(extractor, source, resolver);
+evaluator.evaluate([], [], []);
+```
 
 The resulting report is expected to contain all the necessary information of why a decision was reached.
 For example, using the example classes described above with the data from
@@ -27,7 +42,7 @@ results in the following report:
 @prefix report: <http://example.com/report/temp/>.
 
 <urn:uuid:66b760b3-c9f8-4b5e-9810-900f296e6241> a report:ConflictReport;
-    report:algorithm report:PrioritizeDeny;
+    report:algorithm report:PrioritizeDeny, report:HighestPriority, report:OnlyActiveRules;
     report:conclusion report:Allow;
     report:reason <urn:uuid:3af49332-1fd5-42d1-9621-f3a6299ac457>;
     report:policyReport <urn:uuid:e5eba200-8faf-40df-adb0-106e12d2c231>.
@@ -45,6 +60,8 @@ results in the following report:
 
 ## Potential issues
 
+### Policy extraction
+
 The `OdrlPolicyExtractor` splits policies by detecting individual rules.
 These are found by looking for the action and target relations of rules,
 and potentially making the cross product if these occur multiple times in the same rule.
@@ -52,6 +69,10 @@ This has two potential issues:
 
 1. In case a policy uses custom profile relations that could also indicate different rule instances, these will not be detected.
 2. If the target and/or action are linked to the policy instead of the rule, the extractor will be unable to handle that.
+
+### ODRL focus
+
+Currently, some components are still assuming too much that the input will be ODRL.
 
 ## Components.js
 

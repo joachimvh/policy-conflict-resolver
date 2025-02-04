@@ -1,6 +1,6 @@
 import type { Quad } from '@rdfjs/types';
 import type { Evaluator } from './Evaluator';
-import type { EvaluatorHandlerArgs } from './EvaluatorHandler';
+import type { EvaluatorHandlerInput } from './EvaluatorHandler';
 import { EvaluatorHandler } from './EvaluatorHandler';
 
 /**
@@ -13,7 +13,7 @@ export class WrappedEvaluatorHandler extends EvaluatorHandler {
     super();
   }
 
-  public async handle({ policy, request, state }: EvaluatorHandlerArgs): Promise<Quad[]> {
+  public async handle({ policy, request, state }: EvaluatorHandlerInput): Promise<Quad[]> {
     return this.evaluator.evaluate(policy, request, state);
   }
 }

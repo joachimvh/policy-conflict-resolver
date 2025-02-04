@@ -26,6 +26,6 @@ export class ConflictEvaluator implements Evaluator {
       })),
     );
 
-    return this.resolver.handleSafe({ reports });
+    return (await this.resolver.handleSafe({ reports })).report;
   }
 }

@@ -1,5 +1,10 @@
 import { createVocabulary } from 'rdf-vocabulary';
 
+export const CODRL = createVocabulary(
+  'urn:example:custom:odrl:',
+  'priority',
+);
+
 export const ODRL = createVocabulary(
   'http://www.w3.org/ns/odrl/2/',
   'Set',
@@ -31,8 +36,11 @@ export const REPORT = createVocabulary(
   'Deny',
   'algorithm',
   'reason',
-  'NoActiveRule',
+  'NoValidRule',
+  'HighestPriority',
+  'OnlyActiveRules',
   'policyReport',
+  'rule',
 );
 
 export const RDF = createVocabulary(

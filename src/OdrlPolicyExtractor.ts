@@ -1,6 +1,6 @@
 import type { Quad, Term } from '@rdfjs/types';
 import { Store } from 'n3';
-import type { PolicyExtractorArgs } from './PolicyExtractor';
+import type { PolicyExtractorInput } from './PolicyExtractor';
 import { PolicyExtractor } from './PolicyExtractor';
 import { getTripleChain } from './Util';
 import { ODRL } from './Vocabularies';
@@ -11,7 +11,7 @@ import { ODRL } from './Vocabularies';
  * Because of this, this will not work on policy data where those triples have a policy instead of a rule as subject.
  */
 export class OdrlPolicyExtractor extends PolicyExtractor {
-  public async handle({ policies }: PolicyExtractorArgs): Promise<Quad[][]> {
+  public async handle({ policies }: PolicyExtractorInput): Promise<Quad[][]> {
     return this.getPolicies(new Store(policies));
   }
 

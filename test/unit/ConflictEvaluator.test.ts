@@ -45,9 +45,10 @@ describe('ConflictEvaluator', (): void => {
     source.handleSafe.mockResolvedValueOnce(
       [ DF.quad(DF.namedNode('urn:4'), RDF.terms.type, REPORT.terms.PolicyReport) ],
     );
-    resolver.handleSafe.mockResolvedValue(
-      [ DF.quad(DF.namedNode('urn:5'), RDF.terms.type, REPORT.terms.ConflictReport) ],
-    );
+    resolver.handleSafe.mockResolvedValue({
+      identifier: DF.namedNode('urn:5'),
+      report: [ DF.quad(DF.namedNode('urn:5'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+    });
 
     const report = await evaluator.evaluate(policies, request, state);
     expect(report).toEqual([ DF.quad(DF.namedNode('urn:5'), RDF.terms.type, REPORT.terms.ConflictReport) ]);
