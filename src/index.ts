@@ -8,3 +8,4 @@ export * from './PolicyExtractor';
 export * from './PriorityConflictResolver';
 export * from './Util';
 export * from './Vocabularies';
+export * from './WrappedEvaluatorHandler';
