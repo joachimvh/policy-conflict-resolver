@@ -19,6 +19,9 @@
     "config",
     "dist"
   ],
+  "engines": {
+    "node": ">=18.14"
+  },
   "scripts": {
     "build": "npm run build:ts && npm run build:components",
     "build:components": "componentsjs-generator -s src -c dist/components -i .componentsignore -r pcr",
