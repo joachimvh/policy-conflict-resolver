@@ -43,7 +43,7 @@
     "rdf-vocabulary": "^1.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.4.0",
+    "@commitlint/cli": "^20.0.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/jest": "^30.0.0",
