@@ -3,12 +3,12 @@ import type { Quad } from '@rdfjs/types';
 import { DataFactory as DF } from 'n3';
 import type { ConflictResolver, ConflictResolverOutput } from '../../src/ConflictResolver';
 import { PriorityConflictResolver } from '../../src/PriorityConflictResolver';
-import { CODRL, RDF, REPORT } from '../../src/Vocabularies';
+import { CODRL, FORCE, RDF } from '../../src/Vocabularies';
 
 describe('PriorityConflictResolver', (): void => {
   const response: ConflictResolverOutput = {
     identifier: DF.namedNode('response'),
-    report: [ DF.quad(DF.namedNode('response'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+    report: [ DF.quad(DF.namedNode('response'), RDF.terms.type, FORCE.terms.ConflictReport) ],
   };
   let reports: { policy: Quad[]; report: Quad[] }[];
   let source: jest.Mocked<ConflictResolver>;
@@ -29,17 +29,17 @@ describe('PriorityConflictResolver', (): void => {
   it('calls the source with the highest priority policies.', async(): Promise<void> => {
     reports.push({
       policy: [ DF.quad(DF.namedNode('1'), CODRL.terms.priority, DF.literal(4)) ],
-      report: [ DF.quad(DF.namedNode('2'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('2'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
     reports.push({
       policy: [ DF.quad(DF.namedNode('3'), CODRL.terms.priority, DF.literal(3)) ],
-      report: [ DF.quad(DF.namedNode('4'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('4'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
 
     const result = await resolver.handle({ reports });
     expect(result.report).toBeRdfIsomorphic([
       ...response.report,
-      DF.quad(response.identifier, REPORT.terms.algorithm, REPORT.terms.HighestPriority),
+      DF.quad(response.identifier, FORCE.terms.algorithm, FORCE.terms.HighestPriority),
     ]);
     expect(result.identifier).toEqualRdfTerm(response.identifier);
     expect(source.handleSafe).toHaveBeenCalledTimes(1);
@@ -56,15 +56,15 @@ describe('PriorityConflictResolver', (): void => {
   it('sends all reports to the source if some of them have no priority.', async(): Promise<void> => {
     reports.push({
       policy: [ DF.quad(DF.namedNode('1'), CODRL.terms.priority, DF.literal(4)) ],
-      report: [ DF.quad(DF.namedNode('2'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('2'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
     reports.push({
       policy: [ DF.quad(DF.namedNode('3'), CODRL.terms.priority, DF.literal(3)) ],
-      report: [ DF.quad(DF.namedNode('4'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('4'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
     reports.push({
       policy: [ ],
-      report: [ DF.quad(DF.namedNode('6'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('6'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
 
     const result = await resolver.handle({ reports });
@@ -80,7 +80,7 @@ describe('PriorityConflictResolver', (): void => {
         DF.quad(DF.namedNode('1'), CODRL.terms.priority, DF.literal(4)),
         DF.quad(DF.namedNode('1'), CODRL.terms.priority, DF.literal(5)),
       ],
-      report: [ DF.quad(DF.namedNode('2'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('2'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
 
     await expect(resolver.handle({ reports })).rejects.toThrow('Unexpected input with multiple priorities');
@@ -89,15 +89,15 @@ describe('PriorityConflictResolver', (): void => {
   it('can be configured to default policies to priority 0.', async(): Promise<void> => {
     reports.push({
       policy: [ DF.quad(DF.namedNode('1'), CODRL.terms.priority, DF.literal(-4)) ],
-      report: [ DF.quad(DF.namedNode('2'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('2'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
     reports.push({
       policy: [ DF.quad(DF.namedNode('3'), CODRL.terms.priority, DF.literal(-3)) ],
-      report: [ DF.quad(DF.namedNode('4'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('4'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
     reports.push({
       policy: [ ],
-      report: [ DF.quad(DF.namedNode('6'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('6'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
 
     resolver = new PriorityConflictResolver(source, true);

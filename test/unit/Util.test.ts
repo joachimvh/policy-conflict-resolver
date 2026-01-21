@@ -1,7 +1,7 @@
 import 'jest-rdf';
 import { DataFactory as DF, Store } from 'n3';
 import { getTripleChain } from '../../src/Util';
-import { RDF, REPORT } from '../../src/Vocabularies';
+import { FORCE, RDF } from '../../src/Vocabularies';
 
 describe('Util', (): void => {
   describe('#getTripleChain', (): void => {
@@ -10,18 +10,18 @@ describe('Util', (): void => {
       const report = DF.namedNode('urn:report');
       const subject2 = DF.namedNode('urn:2');
       const data = new Store([
-        DF.quad(subject1, RDF.terms.type, REPORT.terms.ConflictReport),
-        DF.quad(subject1, REPORT.terms.reason, report),
-        DF.quad(report, RDF.terms.type, REPORT.terms.PermissionReport),
-        DF.quad(report, REPORT.terms.ruleReport, subject1),
-        DF.quad(subject2, RDF.terms.type, REPORT.terms.ConflictReport),
+        DF.quad(subject1, RDF.terms.type, FORCE.terms.ConflictReport),
+        DF.quad(subject1, FORCE.terms.reason, report),
+        DF.quad(report, RDF.terms.type, FORCE.terms.PermissionReport),
+        DF.quad(report, FORCE.terms.ruleReport, subject1),
+        DF.quad(subject2, RDF.terms.type, FORCE.terms.ConflictReport),
       ]);
 
       expect(getTripleChain(subject1, data)).toBeRdfIsomorphic([
-        DF.quad(subject1, RDF.terms.type, REPORT.terms.ConflictReport),
-        DF.quad(subject1, REPORT.terms.reason, report),
-        DF.quad(report, RDF.terms.type, REPORT.terms.PermissionReport),
-        DF.quad(report, REPORT.terms.ruleReport, subject1),
+        DF.quad(subject1, RDF.terms.type, FORCE.terms.ConflictReport),
+        DF.quad(subject1, FORCE.terms.reason, report),
+        DF.quad(report, RDF.terms.type, FORCE.terms.PermissionReport),
+        DF.quad(report, FORCE.terms.ruleReport, subject1),
       ]);
     });
   });

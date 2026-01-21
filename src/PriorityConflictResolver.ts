@@ -2,7 +2,7 @@ import type { Quad } from '@rdfjs/types';
 import { DataFactory as DF, Store } from 'n3';
 import type { ConflictResolverInput, ConflictResolverOutput } from './ConflictResolver';
 import { ConflictResolver } from './ConflictResolver';
-import { CODRL, REPORT } from './Vocabularies';
+import { CODRL, FORCE } from './Vocabularies';
 
 /**
  * A {@link ConflictResolver} that finds that, for all input policy/report combinations,
@@ -75,7 +75,7 @@ export class PriorityConflictResolver extends ConflictResolver {
     });
 
     result.report.push(
-      DF.quad(result.identifier, REPORT.terms.algorithm, REPORT.terms.HighestPriority),
+      DF.quad(result.identifier, FORCE.terms.algorithm, FORCE.terms.HighestPriority),
     );
 
     return result;

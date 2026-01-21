@@ -2,7 +2,7 @@ import 'jest-rdf';
 import { DataFactory as DF } from 'n3';
 import { ActiveConflictResolver } from '../../src/ActiveConflictResolver';
 import type { ConflictResolver, ConflictResolverInput } from '../../src/ConflictResolver';
-import { RDF, REPORT } from '../../src/Vocabularies';
+import { FORCE, RDF } from '../../src/Vocabularies';
 
 describe('ActiveConflictResolver', (): void => {
   const reports: ConflictResolverInput['reports'] = [{
@@ -10,7 +10,7 @@ describe('ActiveConflictResolver', (): void => {
     report: [],
   }];
   const responseId = DF.namedNode('urn:uri');
-  const response = [ DF.quad(responseId, RDF.terms.type, REPORT.terms.PolicyReport) ];
+  const response = [ DF.quad(responseId, RDF.terms.type, FORCE.terms.PolicyReport) ];
   let source: jest.Mocked<ConflictResolver>;
   let resolver: ActiveConflictResolver;
 
@@ -40,11 +40,11 @@ describe('ActiveConflictResolver', (): void => {
   it('only sends the active reports to the source handler.', async(): Promise<void> => {
     const active: ConflictResolverInput['reports'][number] = {
       policy: [],
-      report: [ DF.quad(DF.namedNode(''), REPORT.terms.activationState, REPORT.terms.Active) ],
+      report: [ DF.quad(DF.namedNode(''), FORCE.terms.activationState, FORCE.terms.Active) ],
     };
     const inactive: ConflictResolverInput['reports'][number] = {
       policy: [],
-      report: [ DF.quad(DF.namedNode(''), REPORT.terms.activationState, REPORT.terms.Inactive) ],
+      report: [ DF.quad(DF.namedNode(''), FORCE.terms.activationState, FORCE.terms.Inactive) ],
     };
 
     const result = await resolver.handleSafe({ reports: [ active, inactive ]});
@@ -53,7 +53,7 @@ describe('ActiveConflictResolver', (): void => {
     expect(result.identifier).toBe(responseId);
     expect(result.report).toBeRdfIsomorphic([
       ...response,
-      DF.quad(responseId, REPORT.terms.algorithm, REPORT.terms.OnlyActiveRules),
+      DF.quad(responseId, FORCE.terms.algorithm, FORCE.terms.OnlyActiveRules),
     ]);
   });
 });

@@ -5,21 +5,8 @@ export const CODRL = createVocabulary(
   'priority',
 );
 
-export const ODRL = createVocabulary(
-  'http://www.w3.org/ns/odrl/2/',
-  'Set',
-  'Request',
-  'permission',
-  'Permission',
-  'prohibition',
-  'Prohibition',
-
-  'action',
-  'target',
-);
-
-export const REPORT = createVocabulary(
-  'http://example.com/report/temp/',
+export const FORCE = createVocabulary(
+  'https://w3id.org/force/compliance-report#',
   'PolicyReport',
   'PermissionReport',
   'ProhibitionReport',
@@ -41,6 +28,19 @@ export const REPORT = createVocabulary(
   'OnlyActiveRules',
   'policyReport',
   'rule',
+);
+
+export const ODRL = createVocabulary(
+  'http://www.w3.org/ns/odrl/2/',
+  'Set',
+  'Request',
+  'permission',
+  'Permission',
+  'prohibition',
+  'Prohibition',
+
+  'action',
+  'target',
 );
 
 export const RDF = createVocabulary(

@@ -4,7 +4,7 @@ import { ConflictEvaluator } from '../../src/ConflictEvaluator';
 import type { ConflictResolver } from '../../src/ConflictResolver';
 import type { EvaluatorHandler } from '../../src/EvaluatorHandler';
 import type { PolicyExtractor } from '../../src/PolicyExtractor';
-import { ODRL, RDF, REPORT } from '../../src/Vocabularies';
+import { FORCE, ODRL, RDF } from '../../src/Vocabularies';
 
 describe('ConflictEvaluator', (): void => {
   let extractor: jest.Mocked<PolicyExtractor>;
@@ -40,18 +40,18 @@ describe('ConflictEvaluator', (): void => {
       [ DF.quad(DF.namedNode('urn:2'), RDF.terms.type, ODRL.terms.Set) ],
     ]);
     source.handleSafe.mockResolvedValueOnce(
-      [ DF.quad(DF.namedNode('urn:3'), RDF.terms.type, REPORT.terms.PolicyReport) ],
+      [ DF.quad(DF.namedNode('urn:3'), RDF.terms.type, FORCE.terms.PolicyReport) ],
     );
     source.handleSafe.mockResolvedValueOnce(
-      [ DF.quad(DF.namedNode('urn:4'), RDF.terms.type, REPORT.terms.PolicyReport) ],
+      [ DF.quad(DF.namedNode('urn:4'), RDF.terms.type, FORCE.terms.PolicyReport) ],
     );
     resolver.handleSafe.mockResolvedValue({
       identifier: DF.namedNode('urn:5'),
-      report: [ DF.quad(DF.namedNode('urn:5'), RDF.terms.type, REPORT.terms.ConflictReport) ],
+      report: [ DF.quad(DF.namedNode('urn:5'), RDF.terms.type, FORCE.terms.ConflictReport) ],
     });
 
     const report = await evaluator.evaluate(policies, request, state);
-    expect(report).toEqual([ DF.quad(DF.namedNode('urn:5'), RDF.terms.type, REPORT.terms.ConflictReport) ]);
+    expect(report).toEqual([ DF.quad(DF.namedNode('urn:5'), RDF.terms.type, FORCE.terms.ConflictReport) ]);
     expect(extractor.handleSafe).toHaveBeenCalledTimes(1);
     expect(extractor.handleSafe).toHaveBeenLastCalledWith({ policies });
     expect(source.handleSafe).toHaveBeenCalledTimes(2);
@@ -67,11 +67,11 @@ describe('ConflictEvaluator', (): void => {
     expect(resolver.handleSafe).toHaveBeenLastCalledWith({ reports: [
       {
         policy: [ DF.quad(DF.namedNode('urn:1'), RDF.terms.type, ODRL.terms.Set) ],
-        report: [ DF.quad(DF.namedNode('urn:3'), RDF.terms.type, REPORT.terms.PolicyReport) ],
+        report: [ DF.quad(DF.namedNode('urn:3'), RDF.terms.type, FORCE.terms.PolicyReport) ],
       },
       {
         policy: [ DF.quad(DF.namedNode('urn:2'), RDF.terms.type, ODRL.terms.Set) ],
-        report: [ DF.quad(DF.namedNode('urn:4'), RDF.terms.type, REPORT.terms.PolicyReport) ],
+        report: [ DF.quad(DF.namedNode('urn:4'), RDF.terms.type, FORCE.terms.PolicyReport) ],
       },
     ]});
   });

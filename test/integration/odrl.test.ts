@@ -6,7 +6,7 @@ import { ConflictEvaluator } from '../../src/ConflictEvaluator';
 import { DenyConflictResolver } from '../../src/DenyConflictResolver';
 import { OdrlPolicyExtractor } from '../../src/OdrlPolicyExtractor';
 import { PriorityConflictResolver } from '../../src/PriorityConflictResolver';
-import { CODRL, ODRL, RDF, REPORT } from '../../src/Vocabularies';
+import { CODRL, FORCE, ODRL, RDF } from '../../src/Vocabularies';
 import { WrappedEvaluatorHandler } from '../../src/WrappedEvaluatorHandler';
 import { defaultAction, defaultTarget, generatePolicies } from '../util/Util';
 
@@ -34,34 +34,34 @@ describe('A full ODRL setup', (): void => {
   it('rejects the request if there are no active policies.', async(): Promise<void> => {
     const policies = generatePolicies({ permission: { wrong: [ null ]}, prohibition: { wrong: [ null ]}});
     const report = new Store(await evaluator.evaluate(policies, request, state));
-    expect(report.countQuads(null, RDF.terms.type, REPORT.terms.ConflictReport, null)).toBe(1);
-    const subject = report.getSubjects(RDF.terms.type, REPORT.terms.ConflictReport, null)[0];
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.PrioritizeDeny, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.HighestPriority, null)).toBe(0);
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.OnlyActiveRules, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.conclusion, REPORT.terms.Deny, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.reason, REPORT.terms.NoValidRule, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.reason, REPORT.terms.policyReport, null)).toBe(0);
+    expect(report.countQuads(null, RDF.terms.type, FORCE.terms.ConflictReport, null)).toBe(1);
+    const subject = report.getSubjects(RDF.terms.type, FORCE.terms.ConflictReport, null)[0];
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.PrioritizeDeny, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.HighestPriority, null)).toBe(0);
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.OnlyActiveRules, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.conclusion, FORCE.terms.Deny, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.reason, FORCE.terms.NoValidRule, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.reason, FORCE.terms.policyReport, null)).toBe(0);
   });
 
   it('rejects the request if there is at least one active prohibition.', async(): Promise<void> => {
     const policies = generatePolicies({ permission: { match: [ null, null ]}, prohibition: { match: [ null, null ]}});
     const report = new Store(await evaluator.evaluate(policies, request, state));
 
-    expect(report.countQuads(null, RDF.terms.type, REPORT.terms.ConflictReport, null)).toBe(1);
-    const subject = report.getSubjects(RDF.terms.type, REPORT.terms.ConflictReport, null)[0];
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.PrioritizeDeny, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.HighestPriority, null)).toBe(0);
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.OnlyActiveRules, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.conclusion, REPORT.terms.Deny, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.reason, null, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.policyReport, null, null)).toBe(1);
-    expect(report.countQuads(null, RDF.terms.type, REPORT.terms.PolicyReport, null)).toBe(1);
-    const reason = report.getObjects(subject, REPORT.terms.reason, null)[0];
-    const policy = report.getObjects(subject, REPORT.terms.policyReport, null)[0];
-    expect(report.countQuads(policy, REPORT.terms.ruleReport, reason, null)).toBe(1);
-    expect(report.countQuads(reason, RDF.terms.type, REPORT.terms.ProhibitionReport, null)).toBe(1);
-    expect(report.countQuads(reason, REPORT.terms.activationState, REPORT.terms.Active, null)).toBe(1);
+    expect(report.countQuads(null, RDF.terms.type, FORCE.terms.ConflictReport, null)).toBe(1);
+    const subject = report.getSubjects(RDF.terms.type, FORCE.terms.ConflictReport, null)[0];
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.PrioritizeDeny, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.HighestPriority, null)).toBe(0);
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.OnlyActiveRules, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.conclusion, FORCE.terms.Deny, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.reason, null, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.policyReport, null, null)).toBe(1);
+    expect(report.countQuads(null, RDF.terms.type, FORCE.terms.PolicyReport, null)).toBe(1);
+    const reason = report.getObjects(subject, FORCE.terms.reason, null)[0];
+    const policy = report.getObjects(subject, FORCE.terms.policyReport, null)[0];
+    expect(report.countQuads(policy, FORCE.terms.ruleReport, reason, null)).toBe(1);
+    expect(report.countQuads(reason, RDF.terms.type, FORCE.terms.ProhibitionReport, null)).toBe(1);
+    expect(report.countQuads(reason, FORCE.terms.activationState, FORCE.terms.Active, null)).toBe(1);
   });
 
   it('accepts the request if there is no active prohibition and an active permission.', async(): Promise<void> => {
@@ -71,20 +71,20 @@ describe('A full ODRL setup', (): void => {
     });
     const report = new Store(await evaluator.evaluate(policies, request, state));
 
-    expect(report.countQuads(null, RDF.terms.type, REPORT.terms.ConflictReport, null)).toBe(1);
-    const subject = report.getSubjects(RDF.terms.type, REPORT.terms.ConflictReport, null)[0];
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.PrioritizeDeny, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.HighestPriority, null)).toBe(0);
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.OnlyActiveRules, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.conclusion, REPORT.terms.Allow, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.reason, null, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.policyReport, null, null)).toBe(1);
-    expect(report.countQuads(null, RDF.terms.type, REPORT.terms.PolicyReport, null)).toBe(1);
-    const reason = report.getObjects(subject, REPORT.terms.reason, null)[0];
-    const policy = report.getObjects(subject, REPORT.terms.policyReport, null)[0];
-    expect(report.countQuads(policy, REPORT.terms.ruleReport, reason, null)).toBe(1);
-    expect(report.countQuads(reason, RDF.terms.type, REPORT.terms.PermissionReport, null)).toBe(1);
-    expect(report.countQuads(reason, REPORT.terms.activationState, REPORT.terms.Active, null)).toBe(1);
+    expect(report.countQuads(null, RDF.terms.type, FORCE.terms.ConflictReport, null)).toBe(1);
+    const subject = report.getSubjects(RDF.terms.type, FORCE.terms.ConflictReport, null)[0];
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.PrioritizeDeny, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.HighestPriority, null)).toBe(0);
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.OnlyActiveRules, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.conclusion, FORCE.terms.Allow, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.reason, null, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.policyReport, null, null)).toBe(1);
+    expect(report.countQuads(null, RDF.terms.type, FORCE.terms.PolicyReport, null)).toBe(1);
+    const reason = report.getObjects(subject, FORCE.terms.reason, null)[0];
+    const policy = report.getObjects(subject, FORCE.terms.policyReport, null)[0];
+    expect(report.countQuads(policy, FORCE.terms.ruleReport, reason, null)).toBe(1);
+    expect(report.countQuads(reason, RDF.terms.type, FORCE.terms.PermissionReport, null)).toBe(1);
+    expect(report.countQuads(reason, FORCE.terms.activationState, FORCE.terms.Active, null)).toBe(1);
   });
 
   it('prioritizes requests with a higher priority.', async(): Promise<void> => {
@@ -100,21 +100,21 @@ describe('A full ODRL setup', (): void => {
 
     const report = new Store(await evaluator.evaluate(policies, request, state));
 
-    expect(report.countQuads(null, RDF.terms.type, REPORT.terms.ConflictReport, null)).toBe(1);
-    const subject = report.getSubjects(RDF.terms.type, REPORT.terms.ConflictReport, null)[0];
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.PrioritizeDeny, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.HighestPriority, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.algorithm, REPORT.terms.OnlyActiveRules, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.conclusion, REPORT.terms.Allow, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.reason, null, null)).toBe(1);
-    expect(report.countQuads(subject, REPORT.terms.policyReport, null, null)).toBe(1);
-    expect(report.countQuads(null, RDF.terms.type, REPORT.terms.PolicyReport, null)).toBe(1);
-    const reason = report.getObjects(subject, REPORT.terms.reason, null)[0];
-    const policy = report.getObjects(subject, REPORT.terms.policyReport, null)[0];
-    expect(report.countQuads(policy, REPORT.terms.ruleReport, reason, null)).toBe(1);
-    expect(report.countQuads(reason, RDF.terms.type, REPORT.terms.PermissionReport, null)).toBe(1);
-    expect(report.countQuads(reason, REPORT.terms.activationState, REPORT.terms.Active, null)).toBe(1);
+    expect(report.countQuads(null, RDF.terms.type, FORCE.terms.ConflictReport, null)).toBe(1);
+    const subject = report.getSubjects(RDF.terms.type, FORCE.terms.ConflictReport, null)[0];
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.PrioritizeDeny, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.HighestPriority, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.algorithm, FORCE.terms.OnlyActiveRules, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.conclusion, FORCE.terms.Allow, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.reason, null, null)).toBe(1);
+    expect(report.countQuads(subject, FORCE.terms.policyReport, null, null)).toBe(1);
+    expect(report.countQuads(null, RDF.terms.type, FORCE.terms.PolicyReport, null)).toBe(1);
+    const reason = report.getObjects(subject, FORCE.terms.reason, null)[0];
+    const policy = report.getObjects(subject, FORCE.terms.policyReport, null)[0];
+    expect(report.countQuads(policy, FORCE.terms.ruleReport, reason, null)).toBe(1);
+    expect(report.countQuads(reason, RDF.terms.type, FORCE.terms.PermissionReport, null)).toBe(1);
+    expect(report.countQuads(reason, FORCE.terms.activationState, FORCE.terms.Active, null)).toBe(1);
     // Verify that the expected rule is part of the reason
-    expect(report.countQuads(reason, REPORT.terms.rule, rule, null)).toBe(1);
+    expect(report.countQuads(reason, FORCE.terms.rule, rule, null)).toBe(1);
   });
 });

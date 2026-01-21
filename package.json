@@ -53,7 +53,7 @@
     "jest": "^30.2.0",
     "jest-rdf": "^2.0.0",
     "markdownlint-cli2": "^0.13.0",
-    "odrl-evaluator": "^0.1.1",
+    "odrl-evaluator": "^0.5.1",
     "opinionated-eslint-config": "^0.1.0",
     "simple-git": "^3.25.0",
     "ts-jest": "^29.4.6",
