@@ -1,6 +1,6 @@
 {
   "name": "policy-conflict-resolver",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "repository": "https://github.com/joachimvh/policy-conflict-resolver/",
   "main": "./dist/index.js",

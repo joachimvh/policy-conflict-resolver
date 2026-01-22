@@ -1,7 +1,18 @@
 <!-- markdownlint-disable MD013 -->
+<!-- markdownlint-disable MD013 -->
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [0.0.2](https://github.com/joachimvh/policy-conflict-resolver/compare/v0.0.1...v0.0.2) (2026-01-22)
+
+### Features
+
+* Use Force vocabulary ([acef9e4](https://github.com/joachimvh/policy-conflict-resolver/commit/acef9e46b93cb9f01ecc7de18a9877cbd33a019a))
+
+### Fixes
+
+* Add missing export ([abdd6db](https://github.com/joachimvh/policy-conflict-resolver/commit/abdd6dbdaf8385a80e83c01ae5be64cdc047973b))
 
 ## 0.0.1 (2025-02-04)
 
