@@ -1,8 +1,13 @@
 <!-- markdownlint-disable MD013 -->
-<!-- markdownlint-disable MD013 -->
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [0.0.3](https://github.com/joachimvh/policy-conflict-resolver/compare/v0.0.2...v0.0.3) (2026-01-26)
+
+### Fixes
+
+* Export EvaluatorHandler ([964455f](https://github.com/joachimvh/policy-conflict-resolver/commit/964455f64ac5b195c45687c72cbfc63b77e7ca89))
 
 ## [0.0.2](https://github.com/joachimvh/policy-conflict-resolver/compare/v0.0.1...v0.0.2) (2026-01-22)
 
