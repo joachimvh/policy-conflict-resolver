@@ -3,6 +3,7 @@ export * from './ConflictEvaluator';
 export * from './ConflictResolver';
 export * from './DenyConflictResolver';
 export * from './Evaluator';
+export * from './EvaluatorHandler';
 export * from './OdrlPolicyExtractor';
 export * from './PolicyExtractor';
 export * from './PriorityConflictResolver';
